@@ -1,0 +1,4 @@
+.meteor/local
+.meteor/meteorite
+.idea/
+npm-debug.log
