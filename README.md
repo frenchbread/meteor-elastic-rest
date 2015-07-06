@@ -23,7 +23,7 @@ See elastic [docs](https://www.elastic.co/guide/index.html).
 3. Run meteor
 
     ```
-    meteor --settings setting.json
+    meteor --settings settings.json
     ```
 
 ## Docs
