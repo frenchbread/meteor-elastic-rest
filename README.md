@@ -31,7 +31,7 @@ See elastic [docs](https://www.elastic.co/guide/index.html).
 
 ####Parameters:
 
-    new ElasticSearch(index, type, limit, query)
+    new ElasticRest(index, type, limit, query)
     
 * `index` - String
 * `type`  - String

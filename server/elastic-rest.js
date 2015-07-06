@@ -1,3 +1,9 @@
+/**
+ * Represents Query class
+ * @param {string} index: index provided within the query
+ * @param {string} type: type of records ro be returned
+ * @param {integer} limit: limit of records to be returned
+ */
 ElasticRest = function (index, type, limit, query) {
 
     this.index = index;
@@ -16,9 +22,7 @@ ElasticRest = function (index, type, limit, query) {
     EsClient = Async.wrap(EsClientSource, ['index', 'search']);
 
     /**
-     * index: index provided within the query
-     * type : type of records ro be returned
-     * count: limit of records to be returned
+     *  Search method
      */
     this.doSearch = function () {
 
