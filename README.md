@@ -29,7 +29,7 @@ See elastic [docs](https://www.elastic.co/guide/index.html).
 ## Docs
 ### ElasticRest class:
 
-####Parameters:
+#### Parameters:
 
     new ElasticRest(index, type, limit, query)
     
@@ -40,7 +40,7 @@ See elastic [docs](https://www.elastic.co/guide/index.html).
 
 More about queries in [elastic docs](https://www.elastic.co/guide/en/elasticsearch/reference/1.6/query-dsl.html)
 
-####Properties:
+#### Properties:
 
 Properties are created from parameters and cab be overridden.
 
@@ -49,7 +49,7 @@ Properties are created from parameters and cab be overridden.
 * `limit` - result limit
 * `query` - elasticsearch query
 
-####Methods:
+#### Methods:
 * `doSearch()`
 
 ## Usage example
