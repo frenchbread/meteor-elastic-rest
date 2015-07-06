@@ -8,10 +8,10 @@ See elastic [docs](https://www.elastic.co/guide/index.html).
 1. In you project directory, simply run:
     
     ```
-    meteor install frenchbread:elastic-rest
+    meteor add frenchbread:elastic-rest
     ```
 
-2. Setup ```config.json``` file
+2. Setup ```settings.json``` file in project root directory
     ```
         {
             "elasticsearch": {
@@ -19,7 +19,13 @@ See elastic [docs](https://www.elastic.co/guide/index.html).
             }
         }
     ```
-    
+
+3. Run meteor
+
+    ```
+    meteor --settings setting.json
+    ```
+
 ## Docs
 ### ElasticRest class:
 
