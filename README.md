@@ -56,8 +56,8 @@ Properties are created from parameters and cab be overridden.
 
 ## Usage example
 
-
-    var q = asd(
+```javascript
+    var q = new ElasticRest(
                 "index_here",   // index - can be empty
                 "type_here",  // type  - can be empty
                 10,    // size  - 0 by default
@@ -66,7 +66,9 @@ Properties are created from parameters and cab be overridden.
                 },
                 ["message", "createdAt"]  // fields - array of fields to be returned
             );
-    newQuery.doSearch();
+            
+    q.doSearch();
+```
     
 Example output:
 ```
