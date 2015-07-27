@@ -31,12 +31,13 @@ See elastic [docs](https://www.elastic.co/guide/index.html).
 
 #### Parameters:
 
-    new ElasticRest(index, type, limit, query)
+    new ElasticRest(index, type, limit, query, fields)
     
-* `index` - String
-* `type`  - String
-* `limit` - Integer
-* `query` - Object
+* `index`   - String
+* `type`    - String
+* `limit`   - Integer
+* `query`   - Object
+* `fields`  - Array
 
 More about queries in [elastic docs](https://www.elastic.co/guide/en/elasticsearch/reference/1.6/query-dsl.html)
 
@@ -44,18 +45,27 @@ More about queries in [elastic docs](https://www.elastic.co/guide/en/elasticsear
 
 Properties are created from parameters and cab be overridden.
 
-* `index` - search index
-* `type`  - seach type
-* `limit` - result limit
-* `query` - elasticsearch query
+* `index`   - search index
+* `type`    - seach type
+* `limit`   - result limit
+* `query`   - elasticsearch query
+* `fields`  - fields to be returned
 
 #### Methods:
-* `doSearch()`
+* `doSearch()` - returns Elastic Search response within provided arguments (filtering etc.)
 
 ## Usage example
 
 
-    var newQuery = new ElasticRest("index_here","type_here", 10, { match_all: {} });
+    var q = asd(
+                "index_here",   // index - can be empty
+                "type_here",  // type  - can be empty
+                10,    // size  - 0 by default
+                {
+                    match_all: {}
+                },
+                ["message", "createdAt"]  // fields - array of fields to be returned
+            );
     newQuery.doSearch();
     
 Example output:
