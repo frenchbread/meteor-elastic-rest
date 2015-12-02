@@ -1,6 +1,6 @@
 Package.describe({
     name: 'frenchbread:elastic-rest',
-    version: '0.2.0',
+    version: '0.2.3',
     // Brief, one-line summary of the package.
     summary: "Wrapper for Elastic REST API.",
     // URL to the Git repository containing the source code for this package.
@@ -12,13 +12,13 @@ Package.describe({
 
 Package.onUse(function(api) {
     api.versionsFrom('1.1.0.2');
-    api.use(["meteorhacks:npm@1.3.0"]);
+    api.use(["meteorhacks:npm@1.5.0"]);
     api.addFiles('server/elastic-rest.js');
     api.export("ElasticRest", ['server']);
 });
 
 Npm.depends({
-    "elasticsearch" : "3.0.2"
+    "elasticsearch" : "10.0.1"
 });
 
 Package.onTest(function(api) {
