@@ -1,61 +1,77 @@
 /**
- * Represents Query class
- * @param {string} index: index provided within the query
- * @param {string} type: type of records ro be returned
- * @param {integer} size: limit of records to be returned
- * @param {object} query: query to be used by elasticsearch to return data
- * @param {array} fields: fields to be returned within provided query
+ * ElasticRest
+ * Wrapper around elasticsearch NPM package.
+ * @param {object} config: Configuration object.
+ * @param {string} config.host: Elastic search instance URL. (example: http://elasticsearch.example.com:14002)
+ *
+ * @param {object}  options: Options object.
+ * @param {string}  options.index: Search index.
+ * @param {string}  options.type: Type of records ro be returned.
+ * @param {int}     options.size: Amount of records to be returned.
+ * @param {object}  options.query: Query options.
+ * @param {array}   options.fields: Return specific fields
  */
-ElasticRest = function (index, type, size, query, fields) {
+ElasticRest = function (config, options) {
 
-    // initial values
-    this.index  = "";
-    this.type   = "";
-    this.size   = 0;
-    this.query  = {
-        match_all: {}
-    };
-    this.fields = [];
+    // Get reference to 'this'
+    var self = this;
 
-    // assigning provided values to local variables
-    this.index  = index;
-    this.type   = type;
-    this.size   = size;
-    this.query  = query;
-    this.fields = fields;
+    //config = {
+    //    host: "hostname"
+    //};
 
-    ElasticSearch = Meteor.npmRequire('elasticsearch');
+    //options = {
+    //    index: 'api-umbrella-logs-v1-2015-12',
+    //    type: 'log',
+    //    size: 10,
+    //    query: {
+    //        match_all: {}
+    //    },
+    //    fields: [
+    //        'request_at',
+    //        'request_ip_country',
+    //        'request_ip',
+    //        'response_time',
+    //        'request_path',
+    //        'request_ip_location.lon',
+    //        'request_ip_location.lat'
+    //    ]
+    //};
 
-    // create the client
-    EsClientSource = new ElasticSearch.Client({
-        host: Meteor.settings.elasticsearch.host
-    });
+    // Initialise host
+    self._host = config.host;
 
-    // make it fiber aware
-    EsClient = Async.wrap(EsClientSource, ['index', 'search']);
+    // Initialise options
+    self._index     = options.index;
+    self._type      = options.type;
+    self._size      = options.size;
+    self._query     = options.query;
+    self._fields    = options.fields;
 
-    /**
-     *  Search method
-     */
-    this.doSearch = function () {
 
-        if(!this.query  || this.query   ==  {}  || this.query   ==  "") this.query  = { match_all: {} };
+    // Include NPM elasticsearch package (https://www.npmjs.com/package/elasticsearch)
+    var ElasticSearch = Meteor.npmRequire('elasticsearch');
 
-        var body = {
-            query: this.query,
-            size: this.size
-        };
+    // Create the client
+    var EsClientSource = new ElasticSearch.Client({ host: self._host });
 
-        if(!this.fields || this.fields  ==  []  || this.fields  ==  "") { } else { body.fields = this.fields; }
+    // Make it fiber aware
+    var EsClient = Async.wrap(EsClientSource, ['index', 'search']);
 
-        var searchData = EsClient.search({
-            index   : this.index,
-            type    : this.type,
-            body    : body
+    // TODO: Provide error handling
+
+    self.doSearch = function () {
+
+        var results = EsClient.search({
+            index   : self._index,
+            type    : self._type,
+            body    : {
+                query: self._query,
+                size: self._size,
+                fields: self._fields
+            }
         });
 
-
-        return searchData;
+        return results;
     };
-
 };
