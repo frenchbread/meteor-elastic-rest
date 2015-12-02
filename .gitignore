@@ -2,3 +2,4 @@
 .meteor/meteorite
 .idea/
 npm-debug.log
+.npm/
