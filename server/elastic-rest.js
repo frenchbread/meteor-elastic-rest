@@ -1,8 +1,10 @@
 /**
  * ElasticRest
+ *
  * Wrapper around elasticsearch NPM package.
- * @param {object} config: Configuration object.
- * @param {string} config.host: Elastic search instance URL. (example: http://elasticsearch.example.com:14002)
+ *
+ * @param {object}  config: Configuration object.
+ * @param {string}  config.host: Elastic search instance URL. (example: http://elasticsearch.example.com:14002)
  *
  * @param {object}  options: Options object.
  * @param {string}  options.index: Search index.
@@ -16,28 +18,6 @@ ElasticRest = function (config, options) {
     // Get reference to 'this'
     var self = this;
 
-    //config = {
-    //    host: "hostname"
-    //};
-
-    //options = {
-    //    index: 'api-umbrella-logs-v1-2015-12',
-    //    type: 'log',
-    //    size: 10,
-    //    query: {
-    //        match_all: {}
-    //    },
-    //    fields: [
-    //        'request_at',
-    //        'request_ip_country',
-    //        'request_ip',
-    //        'response_time',
-    //        'request_path',
-    //        'request_ip_location.lon',
-    //        'request_ip_location.lat'
-    //    ]
-    //};
-
     // Initialise host
     self._host = config.host;
 
@@ -45,8 +25,8 @@ ElasticRest = function (config, options) {
     self._index     = options.index;
     self._type      = options.type;
     self._size      = options.size;
-    self._query     = options.query;
-    self._fields    = options.fields;
+    self._query     = (_isObjectWithKeys(options.query)) ? options.query : { match_all: {} };
+    self._fields    = (_isArrayWithData(options.fields) ? options.fields : null);
 
 
     // Include NPM elasticsearch package (https://www.npmjs.com/package/elasticsearch)
@@ -58,20 +38,39 @@ ElasticRest = function (config, options) {
     // Make it fiber aware
     var EsClient = Async.wrap(EsClientSource, ['index', 'search']);
 
-    // TODO: Provide error handling
 
+    // Search method
     self.doSearch = function () {
 
-        var results = EsClient.search({
+        // Initial search parameters
+        var p = {
             index   : self._index,
             type    : self._type,
             body    : {
                 query: self._query,
-                size: self._size,
-                fields: self._fields
+                size: self._size
             }
-        });
+        };
 
-        return results;
+        // Check if variable is an array and is not empty
+        if(self._fields !== null) {
+
+            // If true, appends an array to body object
+            p.body.fields = self._fields;
+        }
+
+        // Returns found results
+        return EsClient.search(p);
     };
+
+    // Helper functions
+    function _isObjectWithKeys (obj) {
+
+        return ((typeof obj === 'object') && (Object.keys(obj).length > 0));
+    }
+
+    function _isArrayWithData (arr) {
+
+        return ((Array.isArray(arr)) && (arr.length > 0));
+    }
 };
