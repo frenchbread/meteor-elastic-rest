@@ -1,7 +1,8 @@
-# ElasticRest
+# elastic-rest
 
-A package for meteor that makes it easy to fetch data from elasticsearch server.
-See elastic [docs](https://www.elastic.co/guide/index.html).
+Wrapper for Elastic Search REST API based on elasticsearch [npm package](https://www.npmjs.com/package/elasticsearch).
+
+See ES [docs](https://www.elastic.co/guide/index.html).
 
 ## Installation
 
