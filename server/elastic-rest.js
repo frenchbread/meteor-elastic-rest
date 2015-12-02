@@ -65,7 +65,7 @@ ElasticRest = function (config, options) {
             type    : self._type,
             body    : {
                 query: self._query,
-                size: self._size
+                size: self._size,
                 fields: self._fields
             }
         });
