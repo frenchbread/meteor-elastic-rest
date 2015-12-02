@@ -58,6 +58,8 @@ ElasticRest = function (config, options) {
     // Make it fiber aware
     var EsClient = Async.wrap(EsClientSource, ['index', 'search']);
 
+    // TODO: Provide error handling
+
     self.doSearch = function () {
 
         var results = EsClient.search({
