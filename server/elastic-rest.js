@@ -8,60 +8,67 @@
  */
 ElasticRest = function (config, options) {
 
-    console.log(config);
-    console.log(options);
+    // Get reference to 'this'
+    var self = this;
 
-    //// initial values
-    //this.index  = "";
-    //this.type   = "";
-    //this.size   = 0;
-    //this.query  = {
-    //    match_all: {}
-    //};
-    //this.fields = [];
-    //
-    //// assigning provided values to local variables
-    //this.index  = index;
-    //this.type   = type;
-    //this.size   = size;
-    //this.query  = query;
-    //this.fields = fields;
-    //
+    config = {
+        esHost: Meteor.settings.host
+    };
 
-    ElasticSearch = Meteor.npmRequire('elasticsearch');
+    options = {
+        index: 'api-umbrella-logs-v1-2015-12',
+        type: 'log',
+        size: 10,
+        query: {
+            match_all: {}
+        },
+        fields: [
+            'request_at',
+            'request_ip_country',
+            'request_ip',
+            'response_time',
+            'request_path',
+            'request_ip_location.lon',
+            'request_ip_location.lat'
+        ]
+    };
 
-    // create the client
-    EsClientSource = new ElasticSearch.Client({
+    // TODO: change to config.host
+    // Initialise host
+    self._host = Meteor.settings.host;
+
+    // Initialise options
+    self._index     = options.index;
+    self._type      = options.type;
+    self._size      = options.size;
+    self._query     = options.query;
+    self._fields    = options.fields;
+
+    // Include NPM elasticsearch package (https://www.npmjs.com/package/elasticsearch)
+    var ElasticSearch = Meteor.npmRequire('elasticsearch');
+
+    // Create the client
+    var EsClientSource = new ElasticSearch.Client({
         host: Meteor.settings.elasticsearch.host
     });
 
-    // make it fiber aware
-    EsClient = Async.wrap(EsClientSource, ['index', 'search']);
+    // Make it fiber aware
+    var EsClient = Async.wrap(EsClientSource, ['index', 'search']);
 
-    ///**
-    // *  Search method
-    // */
-    //this.doSearch = function () {
-    //
-    //    if(!this.query  || this.query   ==  {}  || this.query   ==  "") this.query  = { match_all: {} };
-    //
-    //    var body = {
-    //        query: this.query,
-    //        size: this.size
-    //    };
-    //
-    //    if(!this.fields || this.fields  ==  []  || this.fields  ==  "") { } else { body.fields = this.fields; }
-    //
-    //    var searchData = EsClient.search({
-    //        index   : this.index,
-    //        type    : this.type,
-    //        body    : body
-    //    });
-    //
-    //
-    //    return searchData;
-    //};
+    /**
+     *  Search method
+     */
+    self.doSearch = function () {
 
-    return EsClient;
+        var results = EsClient.search({
+            index   : self._index,
+            type    : self._type,
+            body    : {
+                query: self._query,
+                size: self._size
+            }
+        });
 
+        return results;
+    };
 };
