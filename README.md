@@ -11,7 +11,7 @@ $ meteor add frenchbread:elastic-rest
 
 ## Usage
 
-#### Setup
+#### Setup:
 ```javascript
 var config = {
     host: "http://elasticsearch.example.com:14002"
@@ -34,14 +34,11 @@ var options = {
 
 var es = new ElasticRest(config, options);
 
-```
-
-#### Query
-```
 es.doSearch();
+```
 
-// Output  
-/*
+#### Sample output:
+```javascript
 {
     took: 159,
         timed_out: false,
@@ -69,7 +66,7 @@ es.doSearch();
         ]
     }
 }
-*/
+
 ```
 
 ## License
