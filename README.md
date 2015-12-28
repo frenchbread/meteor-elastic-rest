@@ -42,7 +42,7 @@ es.doSearch();
 
 or 
 
-```
+```javascript
 // initialize without query options
 var config = {
     host: "http://elasticsearch.example.com:14002"
