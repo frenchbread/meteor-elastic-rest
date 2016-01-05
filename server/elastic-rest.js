@@ -18,45 +18,52 @@ ElasticRest = function (config, options) {
     // Get reference to 'this'
     var self = this;
 
+    if (!options) { options = {}}
     // Initialise host
     self._host = config.host;
 
     // Initialise options
-    self._index     = options.index;
-    self._type      = options.type;
-    self._size      = options.size;
-    self._query     = (_isObjectWithKeys(options.query)) ? options.query : { match_all: {} };
-    self._fields    = (_isArrayWithData(options.fields) ? options.fields : null);
+    self._index  = options.index;
+    self._type   = options.type;
+    self._size   = options.size;
+    self._query  = (_isObjectWithKeys(options.query)) ? options.query : {match_all: {}};
+    self._fields = (_isArrayWithData(options.fields) ? options.fields : null);
+    self._sort    = options.sort;
+    self._from    = 0;
 
 
     // Include NPM elasticsearch package (https://www.npmjs.com/package/elasticsearch)
     var ElasticSearch = Meteor.npmRequire('elasticsearch');
 
     // Create the client
-    var EsClientSource = new ElasticSearch.Client({ host: self._host });
+    var EsClientSource = new ElasticSearch.Client({host: self._host});
 
     // Make it fiber aware
     var EsClient = Async.wrap(EsClientSource, ['index', 'search']);
 
 
     // Search method
-    self.doSearch = function () {
+    self.doSearch = function (params) {
 
         // Initial search parameters
         var p = {
-            index   : self._index,
-            type    : self._type,
-            body    : {
-                query: self._query,
-                size: self._size
+            index: params && params.index ? params.index : self._index,
+            type: params && params.type ? params.type : self._type,
+            body: {
+                query: params && params.query ? params.query : self._query,
+                size: params && params.size ? params.size : self._size,
+                from: params && params.from ? params.from : self._from
             }
         };
 
         // Check if variable is an array and is not empty
-        if(self._fields !== null) {
-
+        if ((params && params.fields) || self._fields) {
             // If true, appends an array to body object
-            p.body.fields = self._fields;
+            p.body.fields = params && params.fields ? params.fields : self._fields;
+        }
+        if ((params && params.sort) || self._sort) {
+            // If true, appends an array to body object
+            p.body.sort = params && params.sort ? params.sort : self._sort;
         }
 
         // Returns found results
@@ -64,12 +71,12 @@ ElasticRest = function (config, options) {
     };
 
     // Helper functions
-    function _isObjectWithKeys (obj) {
+    function _isObjectWithKeys(obj) {
 
         return ((typeof obj === 'object') && (Object.keys(obj).length > 0));
     }
 
-    function _isArrayWithData (arr) {
+    function _isArrayWithData(arr) {
 
         return ((Array.isArray(arr)) && (arr.length > 0));
     }
