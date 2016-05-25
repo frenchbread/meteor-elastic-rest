@@ -15,7 +15,7 @@ import ElasticSearch from 'elasticsearch';
  * @param {object}  options.query: Query options.
  * @param {array}   options.fields: Return specific fields
  */
-export const ElasticRest = function (config, options) {
+ElasticRest = function (config, options) {
 
     // Get reference to 'this'
     var self = this;
