@@ -1,6 +1,6 @@
 Package.describe({
     name: 'frenchbread:elastic-rest',
-    version: '2.0.2',
+    version: '2.0.3',
     summary: "Wrapper for Elastic REST API.",
     git: 'https://github.com/frenchbread/meteor-elastic-rest',
     documentation: 'README.md'
@@ -13,5 +13,6 @@ Package.onUse(function(api) {
 });
 
 Npm.depends({
-  elasticsearch : '11.0.1'
+  elasticsearch : '11.0.1',
+  async: '2.0.0-rc.5'
 });
