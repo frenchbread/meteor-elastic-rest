@@ -1,6 +1,6 @@
 Package.describe({
     name: 'frenchbread:elastic-rest',
-    version: '1.0.0',
+    version: '2.1.0',
     // Brief, one-line summary of the package.
     summary: "Wrapper for Elastic REST API.",
     // URL to the Git repository containing the source code for this package.
