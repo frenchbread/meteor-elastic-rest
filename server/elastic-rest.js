@@ -1,5 +1,4 @@
-import { ElasticSearch } from 'elasticsearch';
-import { Async } from 'async';
+import ElasticSearch from 'elasticsearch';
 
 /**
  * ElasticRest
