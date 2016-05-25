@@ -1,3 +1,5 @@
+import ElasticSearch from 'elasticsearch';
+
 /**
  * ElasticRest
  *
@@ -28,12 +30,11 @@ ElasticRest = function (config, options) {
     self._size   = options.size;
     self._query  = (_isObjectWithKeys(options.query)) ? options.query : {match_all: {}};
     self._fields = (_isArrayWithData(options.fields) ? options.fields : null);
-    self._sort    = options.sort;
-    self._from    = 0;
+    self._sort   = options.sort;
+    self._from   = 0;
 
 
     // Include NPM elasticsearch package (https://www.npmjs.com/package/elasticsearch)
-    var ElasticSearch = Meteor.npmRequire('elasticsearch');
 
     // Create the client
     var EsClientSource = new ElasticSearch.Client({host: self._host});
